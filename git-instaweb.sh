@@ -414,20 +414,20 @@ mongoose_conf() {
 # For detailed description of every option, visit
 # http://code.google.com/p/mongoose/wiki/MongooseManual
 
-root		$root
-ports		$port
+document_root		$root
+listening_ports		$port
 index_files	gitweb.cgi
-#ssl_cert	$fqgitdir/gitweb/ssl_cert.pem
-error_log	$fqgitdir/gitweb/$httpd_only/error.log
-access_log	$fqgitdir/gitweb/$httpd_only/access.log
+#ssl_certificate	$fqgitdir/gitweb/ssl_cert.pem
+error_log_file	$fqgitdir/gitweb/$httpd_only/error.log
+access_log_file	$fqgitdir/gitweb/$httpd_only/access.log
 
 #cgi setup
-cgi_env		PATH=$PATH,GIT_DIR=$GIT_DIR,GIT_EXEC_PATH=$GIT_EXEC_PATH,GITWEB_CONFIG=$GITWEB_CONFIG
-cgi_interp	$PERL
-cgi_ext		cgi,pl
+cgi_environment		PATH=$PATH,GIT_DIR=$GIT_DIR,GIT_EXEC_PATH=$GIT_EXEC_PATH,GITWEB_CONFIG=$GITWEB_CONFIG
+cgi_interpreter	$PERL
+cgi_pattern		**.cgi$|**.pl$
 
 # mimetype mapping
-mime_types	.gz=application/x-gzip,.tar.gz=application/x-tgz,.tgz=application/x-tgz,.tar=application/x-tar,.zip=application/zip,.gif=image/gif,.jpg=image/jpeg,.jpeg=image/jpeg,.png=image/png,.css=text/css,.html=text/html,.htm=text/html,.js=text/javascript,.c=text/plain,.cpp=text/plain,.log=text/plain,.conf=text/plain,.text=text/plain,.txt=text/plain,.dtd=text/xml,.bz2=application/x-bzip,.tbz=application/x-bzip-compressed-tar,.tar.bz2=application/x-bzip-compressed-tar
+extra_mime_types	.gz=application/x-gzip,.tar.gz=application/x-tgz,.tgz=application/x-tgz,.tar=application/x-tar,.zip=application/zip,.gif=image/gif,.jpg=image/jpeg,.jpeg=image/jpeg,.png=image/png,.css=text/css,.html=text/html,.htm=text/html,.js=text/javascript,.c=text/plain,.cpp=text/plain,.log=text/plain,.conf=text/plain,.text=text/plain,.txt=text/plain,.dtd=text/xml,.bz2=application/x-bzip,.tbz=application/x-bzip-compressed-tar,.tar.bz2=application/x-bzip-compressed-tar
 EOF
 }
 
