@@ -596,6 +596,10 @@ gitweb_conf() {
 	cat > "$fqgitdir/gitweb/gitweb_config.perl" <<EOF
 #!/usr/bin/perl
 our \$projectroot = "$(dirname "$fqgitdir")";
+# On MSYS, convert a Windows-style path to an MSYS-style path
+if ($^O eq 'msys') {
+	\$projectroot =~ s#^([[:alpha:]]):/#/\$1/#;
+}
 our \$git_temp = "$fqgitdir/gitweb/tmp";
 our \$projects_list = \$projectroot;
 
