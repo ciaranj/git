@@ -108,7 +108,22 @@ start_httpd () {
 
 	# don't quote $full_httpd, there can be arguments to it (-f)
 	case "$httpd" in
-	*mongoose*|*plackup*)
+	*mongoose*)
+		#These servers don't have a daemon mode so we'll have to fork it
+		$full_httpd "$conf" -r $root -I $PERL &
+		#Save the pid before doing anything else (we'll print it later)
+		pid=$!
+
+		if test $? != 0; then
+			echo "Could not execute http daemon $httpd."
+			exit 1
+		fi
+
+		cat > "$fqgitdir/pid" <<EOF
+$pid
+EOF
+		;;
+	*plackup*)
 		#These servers don't have a daemon mode so we'll have to fork it
 		$full_httpd "$conf" &
 		#Save the pid before doing anything else (we'll print it later)
@@ -414,7 +429,6 @@ mongoose_conf() {
 # For detailed description of every option, visit
 # http://code.google.com/p/mongoose/wiki/MongooseManual
 
-document_root		$root
 listening_ports		$port
 index_files	gitweb.cgi
 #ssl_certificate	$fqgitdir/gitweb/ssl_cert.pem
@@ -423,7 +437,6 @@ access_log_file	$fqgitdir/gitweb/$httpd_only/access.log
 
 #cgi setup
 cgi_environment		PATH=$PATH,GIT_DIR=$GIT_DIR,GIT_EXEC_PATH=$GIT_EXEC_PATH,GITWEB_CONFIG=$GITWEB_CONFIG
-cgi_interpreter	$PERL
 cgi_pattern		**.cgi$|**.pl$
 
 # mimetype mapping
